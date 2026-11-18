@@ -9,6 +9,7 @@ from collections import Counter, defaultdict
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 from nltk.stem import SnowballStemmer
 from pydantic import BaseModel, Field
 
@@ -217,17 +218,9 @@ app.add_middleware(
 )
 
 
-@app.get("/")
+@app.get("/", include_in_schema=False)
 def root():
-    return {
-        "service": "NFCorpus Information Retrieval API",
-        "status": "ok",
-        "endpoints": {
-            "health": "GET /health",
-            "search": "POST /search",
-            "docs": "GET /docs",
-        },
-    }
+    return RedirectResponse(url="/docs")
 
 
 @app.get("/health")
